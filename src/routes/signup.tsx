@@ -8,30 +8,41 @@ import {
   Button,
   Switcher,
 } from "../components/auth-components";
+import styled from "styled-components";
+
+const Span = styled.span`
+  width: 100%;
+  padding: 2px 18px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+`;
 
 export const Signup = () => {
   return (
     <Container>
       <Div1>
         <Title>Instagram</Title>
+        <Span>친구들의 사진과 동영상을 보려면 가입하세요.</Span>
         <Form>
           <Input
-            //value={password}
+            value={email}
             name="email"
             placeholder="이메일 주소"
-            //onChange={onChange}
+            onChange={onChange}
           />
           <Input
-            //value={password}
+            value={name}
             name="name"
             placeholder="사용자 이름"
-            //onChange={onChange}
+            onChange={onChange}
           />
           <Input
-            //value={password}
+            value={password}
             name="password"
             placeholder="비밀번호"
-            //onChange={onChange}
+            onChange={onChange}
           />
           <Button>가입</Button>
         </Form>

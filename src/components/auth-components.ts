@@ -17,7 +17,7 @@ export const Div1 = styled.div`
   margin-top: 20px;
   display: grid;
   align-items: center;
-  justify-content: center;
+  justify-items: center;
 `;
 export const Title = styled.div`
   color: #262626;
