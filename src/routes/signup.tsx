@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import styled from "styled-components";
 import {
   Container,
   Div1,
@@ -8,7 +10,6 @@ import {
   Button,
   Switcher,
 } from "../components/auth-components";
-import styled from "styled-components";
 
 const Span = styled.span`
   width: 100%;
@@ -20,6 +21,23 @@ const Span = styled.span`
 `;
 
 export const Signup = () => {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { name, value },
+    } = e;
+
+    if (name === "email") {
+      setEmail(value);
+    } else if (name === "name") {
+      setName(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
+  };
   return (
     <Container>
       <Div1>
