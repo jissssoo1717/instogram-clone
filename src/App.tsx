@@ -35,6 +35,8 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
+    width: 100%;
+    height: 100%;
     background-color: #ffffff;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
