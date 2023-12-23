@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { FaHome } from "react-icons/fa";
 
 const Container = styled.div`
   width: 100%;
@@ -56,35 +55,35 @@ export const Home = () => {
             <Title>Instagram</Title>
           </Menus>
           <Menus>
-            <Icon src="../public/home.svg" />
+            <Icon src="/home.svg" />
             <Menu>홈</Menu>
           </Menus>
           <Menus>
-            <Icon />
+            <Icon src="/search.svg" />
             <Menu>검색</Menu>
           </Menus>
           <Menus>
-            <Icon />
+            <Icon src="/browse.svg" />
             <Menu>탐색 탭</Menu>
           </Menus>
           <Menus>
-            <Icon />
+            <Icon src="/reels.svg" />
             <Menu>릴스</Menu>
           </Menus>
           <Menus>
-            <Icon />
+            <Icon src="/message.svg" />
             <Menu>메시지</Menu>
           </Menus>
           <Menus>
-            <Icon />
+            <Icon src="/notification.svg" />
             <Menu>알림</Menu>
           </Menus>
           <Menus>
-            <Icon />
+            <Icon src="/upload.svg" />
             <Menu>만들기</Menu>
           </Menus>
           <Menus>
-            <Icon />
+            <Icon src="/profile.svg" />
             <Menu>프로필</Menu>
           </Menus>
         </MenuList>
