@@ -1,44 +1,37 @@
 import styled from "styled-components";
+import { Menu } from "../components/home-menu";
 
 const Container = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
-  //background-color: beige;
 `;
 const MenuNav = styled.header`
   width: 20%;
   height: 100%;
   border-right: 1px solid #dbdbdb;
 `;
-
 const MenuList = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
   flex-direction: column;
   align-items: flex-start;
-`;
-
-const Menus = styled.div`
-  //width: 100%;
-  padding: 5px 5px;
-  display: flex;
+  padding: 10px 10px;
 `;
 const Title = styled.div`
   color: #262626;
   font-family: "Lobster", sans-serif;
   font-size: 30px;
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 0.7rem 0 3rem;
-`;
-const Icon = styled.img`
-  padding: 1px 1px;
-`;
+  margin: 2rem 0.7rem 3rem;
 
-const Menu = styled.div``;
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 const Tap = styled.div`
   width: 80%;
@@ -51,41 +44,16 @@ export const Home = () => {
       {/* 네비게이션바 */}
       <MenuNav>
         <MenuList>
-          <Menus>
-            <Title>Instagram</Title>
-          </Menus>
-          <Menus>
-            <Icon src="/home.svg" />
-            <Menu>홈</Menu>
-          </Menus>
-          <Menus>
-            <Icon src="/search.svg" />
-            <Menu>검색</Menu>
-          </Menus>
-          <Menus>
-            <Icon src="/browse.svg" />
-            <Menu>탐색 탭</Menu>
-          </Menus>
-          <Menus>
-            <Icon src="/reels.svg" />
-            <Menu>릴스</Menu>
-          </Menus>
-          <Menus>
-            <Icon src="/message.svg" />
-            <Menu>메시지</Menu>
-          </Menus>
-          <Menus>
-            <Icon src="/notification.svg" />
-            <Menu>알림</Menu>
-          </Menus>
-          <Menus>
-            <Icon src="/upload.svg" />
-            <Menu>만들기</Menu>
-          </Menus>
-          <Menus>
-            <Icon src="/profile.svg" />
-            <Menu>프로필</Menu>
-          </Menus>
+          <Title>Instagram</Title>
+
+          <Menu svg="/home.svg" label="홈" />
+          <Menu svg="/search.svg" label="검색" />
+          <Menu svg="/browse.svg" label="탐색 탭" />
+          <Menu svg="/reels.svg" label="릴스" />
+          <Menu svg="/message.svg" label="메시지" />
+          <Menu svg="/notification.svg" label="알림" />
+          <Menu svg="/upload.svg" label="만들기" />
+          <Menu svg="/profile.svg" label="프로필" />
         </MenuList>
       </MenuNav>
 
