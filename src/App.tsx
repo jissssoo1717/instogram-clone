@@ -1,14 +1,14 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import { Layout } from "./components/layout";
-import { Home } from "./routes/home";
+import { Home } from "./routes/taps/home";
 import { Login } from "./routes/login";
 import { Signup } from "./routes/signup";
 import reset from "styled-reset";
-import { Profile } from "./routes/profile";
-import { Explore } from "./routes/explore";
-import { Reels } from "./routes/reels";
-import { DM } from "./routes/direct-message";
+import { Profile } from "./routes/taps/profile";
+import { Explore } from "./routes/taps/explore";
+import { Reels } from "./routes/taps/reels";
+import { DM } from "./routes/taps/direct-message";
 
 // Router를 통한 경로 지정
 const router = createBrowserRouter([

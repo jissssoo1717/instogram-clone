@@ -7,6 +7,7 @@ const Container = styled.header`
   height: 100%;
   border-right: 1px solid #dbdbdb;
   position: fixed;
+  z-index: 50;
 `;
 const MenuList = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ export const Header = () => {
       <MenuList>
         <Title>Instagram</Title>
 
-        <Menu svg="/home.svg" label="홈" onClick={() => console.log("홈")} />
+        <Menu svg="/home.svg" label="홈" onClick={() => navigator("/")} />
         <Menu
           svg="/search.svg"
           label="검색"
@@ -47,17 +48,18 @@ export const Header = () => {
         <Menu
           svg="/browse.svg"
           label="탐색 탭"
-          onClick={() => console.log("탐색 탭")}
+          onClick={() => navigator("/explore")}
         />
         <Menu
           svg="/reels.svg"
           label="릴스"
-          onClick={() => console.log("릴스")}
+          onClick={() => navigator("/reels")}
         />
         <Menu
           svg="/message.svg"
           label="메시지"
-          onClick={() => console.log("메시지")}
+          /* 메세지 페이지로 이동 */
+          onClick={() => navigator("/direct/inbox")}
         />
         <Menu
           svg="/notification.svg"
