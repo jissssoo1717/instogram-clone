@@ -6,6 +6,9 @@ import { Login } from "./routes/login";
 import { Signup } from "./routes/signup";
 import reset from "styled-reset";
 import { Profile } from "./routes/profile";
+import { Explore } from "./routes/explore";
+import { Reels } from "./routes/reels";
+import { DM } from "./routes/direct-message";
 
 // Router를 통한 경로 지정
 const router = createBrowserRouter([
@@ -15,8 +18,24 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
+        // Home 탭
         path: "",
         element: <Home />,
+      },
+      {
+        // 탐색 탭
+        path: "explore",
+        element: <Explore />,
+      },
+      {
+        // 릴스
+        path: "reels",
+        element: <Reels />,
+      },
+      {
+        // 메시지
+        path: "direct/inbox",
+        element: <DM />,
       },
       {
         path: "profile",
