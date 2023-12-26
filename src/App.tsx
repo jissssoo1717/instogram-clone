@@ -5,6 +5,7 @@ import { Home } from "./routes/home";
 import { Login } from "./routes/login";
 import { Signup } from "./routes/signup";
 import reset from "styled-reset";
+import { Profile } from "./routes/profile";
 
 // Router를 통한 경로 지정
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
 ]);
 
