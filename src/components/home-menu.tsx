@@ -29,11 +29,12 @@ const MenuName = styled.div`
 interface Props {
   readonly svg: string;
   readonly label: string;
+  readonly onClick?: () => void;
 }
 
-export const Menu = ({ svg, label }: Props) => {
+export const Menu = ({ svg, label, onClick }: Props) => {
   return (
-    <Menus>
+    <Menus onClick={onClick}>
       <Icon src={svg} />
       <MenuName>{label}</MenuName>
     </Menus>

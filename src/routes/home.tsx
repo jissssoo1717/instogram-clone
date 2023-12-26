@@ -46,14 +46,42 @@ export const Home = () => {
         <MenuList>
           <Title>Instagram</Title>
 
-          <Menu svg="/home.svg" label="홈" />
-          <Menu svg="/search.svg" label="검색" />
-          <Menu svg="/browse.svg" label="탐색 탭" />
-          <Menu svg="/reels.svg" label="릴스" />
-          <Menu svg="/message.svg" label="메시지" />
-          <Menu svg="/notification.svg" label="알림" />
-          <Menu svg="/upload.svg" label="만들기" />
-          <Menu svg="/profile.svg" label="프로필" />
+          <Menu svg="/home.svg" label="홈" onClick={() => console.log("홈")} />
+          <Menu
+            svg="/search.svg"
+            label="검색"
+            onClick={() => console.log("검색")}
+          />
+          <Menu
+            svg="/browse.svg"
+            label="탐색 탭"
+            onClick={() => console.log("탐색 탭")}
+          />
+          <Menu
+            svg="/reels.svg"
+            label="릴스"
+            onClick={() => console.log("릴스")}
+          />
+          <Menu
+            svg="/message.svg"
+            label="메시지"
+            onClick={() => console.log("메시지")}
+          />
+          <Menu
+            svg="/notification.svg"
+            label="알림"
+            onClick={() => console.log("알림")}
+          />
+          <Menu
+            svg="/upload.svg"
+            label="만들기"
+            onClick={() => console.log("만들기")}
+          />
+          <Menu
+            svg="/profile.svg"
+            label="프로필"
+            onClick={() => console.log("프로필")}
+          />
         </MenuList>
       </MenuNav>
 
