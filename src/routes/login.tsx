@@ -18,7 +18,7 @@ export const Login = () => {
       target: { name, value },
     } = e;
 
-    if (name === "id") {
+    if (name === "email") {
       setEmail(value);
     } else if (name === "password") {
       setPassword(value);
@@ -32,8 +32,8 @@ export const Login = () => {
         <Form>
           <Input
             value={email}
-            name="id"
-            placeholder="사용자 이름 또는 이메일"
+            name="email"
+            placeholder="이메일"
             onChange={onChange}
           />
           <Input

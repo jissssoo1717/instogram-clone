@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import styled from "styled-components";
 import {
@@ -10,6 +10,8 @@ import {
   Button,
   Switcher,
 } from "../components/auth-components";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Span = styled.span`
   width: 100%;
@@ -21,9 +23,30 @@ const Span = styled.span`
 `;
 
 export const Signup = () => {
+  const navigator = useNavigate();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+          await updateProfile(userCredential.user, { displayName: name });
+        })
+        .then(() => {
+          navigator("/login");
+        });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setEmail("");
+      setName("");
+      setPassword("");
+    }
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -43,7 +66,7 @@ export const Signup = () => {
       <Div1>
         <Title>Instagram</Title>
         <Span>친구들의 사진과 동영상을 보려면 가입하세요.</Span>
-        <Form>
+        <Form onSubmit={onSubmit}>
           <Input
             value={email}
             name="email"
@@ -62,7 +85,7 @@ export const Signup = () => {
             placeholder="비밀번호"
             onChange={onChange}
           />
-          <Button>가입</Button>
+          <Button type="submit">가입</Button>
         </Form>
       </Div1>
       <Div1>
