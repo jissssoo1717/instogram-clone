@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Menu } from "../components/home-menu";
 import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useEffect } from "react";
 
 const Container = styled.header`
   width: 20%;
@@ -30,29 +32,31 @@ const Title = styled.div`
     cursor: pointer;
   }
 `;
-
 export const Header = () => {
   const navigator = useNavigate();
 
   return (
     <Container>
       <MenuList>
-        <Title>Instagram</Title>
+        <Title onClick={() => navigator("/")}>Instagram</Title>
 
         <Menu svg="/home.svg" label="홈" onClick={() => navigator("/")} />
         <Menu
           svg="/search.svg"
           label="검색"
+          /* 검색 모달 */
           onClick={() => console.log("검색")}
         />
         <Menu
           svg="/browse.svg"
           label="탐색 탭"
+          /* 탐색 페이지로 이동 */
           onClick={() => navigator("/explore")}
         />
         <Menu
           svg="/reels.svg"
           label="릴스"
+          /* 릴스 페이지로 이동 */
           onClick={() => navigator("/reels")}
         />
         <Menu
@@ -64,11 +68,13 @@ export const Header = () => {
         <Menu
           svg="/notification.svg"
           label="알림"
+          /* 알림 모달 */
           onClick={() => console.log("알림")}
         />
         <Menu
           svg="/upload.svg"
           label="만들기"
+          /* 만들기(게시글 업로드) 모달 */
           onClick={() => console.log("만들기")}
         />
         <Menu
