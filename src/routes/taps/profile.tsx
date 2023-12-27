@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
 import { Container, Tap } from "../../components/taps-components";
 
 export const Profile = () => {
-  return (
-    <Container>
-      <Tap>Profile</Tap>
-    </Container>
-  );
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => setIsLoading(false), 1000);
+  }, []);
+
+  return <Container>{isLoading ? null : <Tap>Profile</Tap>}</Container>;
 };
