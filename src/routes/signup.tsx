@@ -33,8 +33,8 @@ export const Signup = () => {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-          await updateProfile(userCredential.user, { displayName: name });
+        .then((userCredential) => {
+          updateProfile(userCredential.user, { displayName: name });
         })
         .then(() => {
           navigator("/login");
