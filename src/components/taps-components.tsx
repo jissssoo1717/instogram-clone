@@ -9,7 +9,7 @@ export const Container = styled.div`
 
 export const Tap = styled.div`
   position: absolute;
-  width: 80%;
+  width: 100%;
   height: 100%;
   top: 0;
   right: 0;

@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import { Menu } from "../components/home-menu";
 import { useNavigate } from "react-router-dom";
-import React from "react";
-import { useEffect } from "react";
+import React, { useState } from "react";
+import { Upload } from "../routes/modals/upload-modal";
 
 const Container = styled.header`
   width: 20%;
   height: 100%;
   border-right: 1px solid #dbdbdb;
   position: fixed;
-  z-index: 50;
+  z-index: 1;
 `;
 const MenuList = styled.div`
   display: flex;
@@ -32,9 +32,13 @@ const Title = styled.div`
     cursor: pointer;
   }
 `;
-export const Header = () => {
-  const navigator = useNavigate();
 
+interface Props {
+  readonly onUploadBtnShow: () => void;
+}
+
+export const Header = ({ onUploadBtnShow }: Props) => {
+  const navigator = useNavigate();
   return (
     <Container>
       <MenuList>
@@ -75,7 +79,7 @@ export const Header = () => {
           svg="/upload.svg"
           label="만들기"
           /* 만들기(게시글 업로드) 모달 */
-          onClick={() => console.log("만들기")}
+          onClick={onUploadBtnShow}
         />
         <Menu
           svg="/profile.svg"

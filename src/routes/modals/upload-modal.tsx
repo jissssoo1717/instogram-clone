@@ -74,7 +74,11 @@ const AttachInputButton = styled.label`
   }
 `;
 
-export const Upload = () => {
+interface Props {
+  readonly onHide: () => void;
+}
+
+export const Upload = ({ onHide }: Props) => {
   return (
     <Container>
       <Modal>
@@ -87,7 +91,8 @@ export const Upload = () => {
           </AttachInputButton>
         </Tap>
       </Modal>
-      <Button></Button>
+
+      <Button onClick={onHide}></Button>
     </Container>
   );
 };
