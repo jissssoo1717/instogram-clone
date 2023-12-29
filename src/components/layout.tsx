@@ -1,10 +1,7 @@
 import { Outlet } from "react-router-dom";
-import { Main } from "../routes/main";
-import { auth } from "../firebase";
+import { Main } from "../routes/main-tap";
 
 export const Layout = () => {
-  const currentUser = auth.currentUser;
-
   return (
     <>
       <Main />
