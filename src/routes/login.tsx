@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Container,
   Div1,
@@ -9,10 +9,14 @@ import {
   Button,
   Switcher,
 } from "../components/auth-components";
+import { auth } from "../firebase";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 
 export const Login = () => {
+  const navigator = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value },
@@ -25,11 +29,27 @@ export const Login = () => {
     }
   };
 
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigator("/");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setEmail("");
+      setPassword("");
+    }
+  };
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => console.log(user));
+  }, []);
+
   return (
     <Container>
       <Div1>
         <Title>Instagram</Title>
-        <Form>
+        <Form onSubmit={onSubmit}>
           <Input
             value={email}
             name="email"

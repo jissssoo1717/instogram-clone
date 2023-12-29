@@ -32,13 +32,15 @@ export const Signup = () => {
     e.preventDefault();
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          updateProfile(userCredential.user, { displayName: name });
-        })
-        .then(() => {
-          navigator("/login");
-        });
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await updateProfile(userCredential.user, { displayName: name });
+
+      navigator("/");
+      /* 회원가입시, 바로 로그인 X, 로그인 페이지로 넘어가는 방법 찾기! */
     } catch (error) {
       console.error(error);
     } finally {
@@ -73,18 +75,21 @@ export const Signup = () => {
             name="email"
             placeholder="이메일 주소"
             onChange={onChange}
+            required
           />
           <Input
             value={name}
             name="name"
             placeholder="사용자 이름"
             onChange={onChange}
+            required
           />
           <Input
             value={password}
             name="password"
             placeholder="비밀번호"
             onChange={onChange}
+            required
           />
           <Button type="submit">가입</Button>
         </Form>

@@ -9,13 +9,20 @@ import { Profile } from "./routes/taps/profile";
 import { Explore } from "./routes/taps/explore";
 import { Reels } from "./routes/taps/reels";
 import { DM } from "./routes/taps/direct-message";
+import { useEffect, useState } from "react";
+import { auth } from "./firebase";
+import { ProtectedRoute } from "./protected-route";
 
 // Router를 통한 경로 지정
 const router = createBrowserRouter([
   {
     // 인증된 사용자만 Layout 내용 확인 가능
     path: "/",
-    element: <Layout />,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         // Home 탭
@@ -68,6 +75,17 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const init = async () => {
+    /* Firebase의 초기 인증 상태 확인 */
+    await auth.authStateReady();
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
   return (
     <>
       <GlobalStyle />
