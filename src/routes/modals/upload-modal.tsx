@@ -141,6 +141,10 @@ export const Upload = ({ onHide }: Props) => {
     }
   };
 
+  const onChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
+  };
+
   const onUpload = (e: React.FormEvent<HTMLFormElement>) => {
     console.log(e.target);
   };
@@ -161,6 +165,8 @@ export const Upload = ({ onHide }: Props) => {
                 maxLength={500}
                 rows={7}
                 required
+                value={text}
+                onChange={onChangeText}
               />
             </TextForm>
           </UploadPostTap>
