@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { Menu } from "../components/home-menu";
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
-import { Upload } from "../routes/modals/upload-modal";
 
 const Container = styled.header`
   width: 20%;
