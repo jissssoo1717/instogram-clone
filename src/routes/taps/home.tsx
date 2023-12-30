@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container, Tap } from "../../components/taps-components";
 import { auth } from "../../firebase";
+import { PostForm } from "../../components/post-form";
 
 export const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,7 +18,8 @@ export const Home = () => {
     <Container>
       {isLoading ? null : (
         <Tap>
-          <button onClick={logOut}></button>
+          {/*<button onClick={logOut}></button>*/}
+          <PostForm />
         </Tap>
       )}
     </Container>
