@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -15,9 +16,8 @@ const Posts = styled.div`
 
 const Post = styled.div`
   width: 100%;
-  height: 750px;
+  max-height: 750px;
   margin: 20px 0;
-  background-color: pink;
 `;
 
 const Head = styled.div`
@@ -58,39 +58,67 @@ const OptButton = styled.button`
 `;
 
 const Body = styled.div`
+  position: relative;
   width: 100%;
-  height: 700px;
-  /* padding-bottom: 10px; */
-  border-bottom: 1px solid black;
-  background-color: aquamarine;
+  height: 650px;
+  max-height: 700px;
 `;
 
 const PostImage = styled.img`
   // 사용자가 게시글 작성 후 해당 이미지 불러옴
   width: 500px;
   height: 500px;
-  background-color: orange;
+  border-radius: 4px;
 `;
 
 const PostUIs = styled.div`
   width: 100%;
-  height: 30px;
-  background-color: greenyellow;
+  height: 40px;
 `;
 
-const PostText = styled.div`
+const PostText = styled.div<{ $extended: boolean }>`
   width: 100%;
-  max-height: 100px;
-  background-color: wheat;
-  padding: 10px 2px;
+  //max-height: 100px;
+  //padding: 10px 2px;
   overflow: hidden;
-  word-break: break-all;
+  white-space: nowrap;
   text-overflow: ellipsis;
+  background-color: red;
 `;
 
-const Text = styled.p``;
+const ShowMoreButton = styled.span<{ $show: boolean }>`
+  ${({ $show }) => ($show ? "" : "display: none;")};
+  cursor: pointer;
+  color: blue;
+  border: 1px solid red; /* Add a border for debugging */
+`;
 
-export const PostForm = () => {
+const Comments = styled.div`
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  padding: 10px 2px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #a4a4a4;
+`;
+
+const CommentTextarea = styled.textarea`
+  width: 400px;
+  resize: none;
+  text-decoration: none;
+  border: none;
+  background-color: transparent;
+`;
+
+export const PostForm: React.FC = () => {
+  const sampleText =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec justo ut libero varius suscipit.";
+  const [isShowText, setIsShowText] = useState(false);
+  // const onShowMoreText = () => {
+  //   console.log("isShowText before toggle:", isShowText);
+  //   setIsShowText(!isShowText);
+  //   console.log("isShowText before toggle:", !isShowText);
+  // };
   return (
     <Container>
       <Posts>
@@ -102,13 +130,16 @@ export const PostForm = () => {
             </UserInfo>
             <OptButton></OptButton>
           </Head>
-
           <Body>
             <PostImage />
             <PostUIs></PostUIs>
-            <PostText>
-              <Text>test</Text>
-            </PostText>
+            <PostText $extended={isShowText}>{sampleText}</PostText>
+            {/* <ShowMoreButton $show={isShowText} onClick={onShowMoreText}>
+              {isShowText ? "접기" : "더보기"}
+            </ShowMoreButton> */}
+            <Comments>
+              <CommentTextarea rows={1} maxLength={140} />
+            </Comments>
           </Body>
         </Post>
       </Posts>
