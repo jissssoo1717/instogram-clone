@@ -1,5 +1,8 @@
+import { ref, uploadBytes } from "firebase/storage";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { auth, db, storage } from "../../firebase";
+import { addDoc, collection } from "firebase/firestore";
 
 const Container = styled.div`
   width: 100%;
@@ -126,6 +129,8 @@ interface Props {
 }
 
 export const Upload = ({ onHide }: Props) => {
+  const user = auth.currentUser;
+
   const [isFile, setIsFile] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -145,8 +150,28 @@ export const Upload = ({ onHide }: Props) => {
     setText(e.target.value);
   };
 
-  const onUpload = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(e.target);
+  const onUpload = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!user || imageFile === null || text === "" || text.length > 500) return;
+
+    try {
+      const doc = await addDoc(collection(db, "posts"), {
+        text,
+        createdAt: Date.now(),
+        userName: user.displayName,
+        userId: user.uid,
+        photo: imageUrl,
+      });
+
+      // 이미지 경로 => posts/유저 아이디/문서 아이디
+      const imageRef = ref(storage, `posts/${user.uid}/${doc.id}`);
+      await uploadBytes(imageRef, imageFile);
+
+      onHide();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
