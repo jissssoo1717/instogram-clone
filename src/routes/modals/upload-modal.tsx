@@ -154,7 +154,7 @@ export const Upload = ({ onHide }: Props) => {
       <Modal onSubmit={onUpload}>
         <Header>
           새 게시물 만들기
-          {isFile ? <UploadButton>공유하기</UploadButton> : null}
+          {isFile ? <UploadButton type="submit">공유하기</UploadButton> : null}
         </Header>
         {isFile ? (
           <UploadPostTap>
