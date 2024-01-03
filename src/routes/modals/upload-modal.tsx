@@ -1,8 +1,9 @@
-import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { auth, db, storage } from "../../firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -130,13 +131,13 @@ interface Props {
 
 export const Upload = ({ onHide }: Props) => {
   const user = auth.currentUser;
-
+  const navigator = useNavigate();
   const [isFile, setIsFile] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState("");
   const [text, setText] = useState("");
 
-  const onUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
 
     if (files && files.length === 1) {
@@ -156,19 +157,27 @@ export const Upload = ({ onHide }: Props) => {
     if (!user || imageFile === null || text === "" || text.length > 500) return;
 
     try {
+      // 이미지 경로 => posts/유저 아이디/문서 아이디
+
       const doc = await addDoc(collection(db, "posts"), {
         text,
         createdAt: Date.now(),
         userName: user.displayName,
         userId: user.uid,
-        photo: imageUrl,
       });
-
-      // 이미지 경로 => posts/유저 아이디/문서 아이디
       const imageRef = ref(storage, `posts/${user.uid}/${doc.id}`);
-      await uploadBytes(imageRef, imageFile);
+      const result = await uploadBytes(imageRef, imageFile);
+
+      const url = await getDownloadURL(result.ref);
+      await updateDoc(doc, { photo: url });
+
+      setIsFile(false);
+      setImageFile(null);
+      setImageUrl("");
+      setText("");
 
       onHide();
+      navigator("/");
     } catch (error) {
       console.error(error);
     }
