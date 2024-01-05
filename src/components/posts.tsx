@@ -1,8 +1,15 @@
 import styled from "styled-components";
 import { PostForm } from "./post-form";
-import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
+import { Unsubscribe } from "firebase/auth";
 
 const Container = styled.div`
   width: 100%;
@@ -29,29 +36,53 @@ export interface PostProps {
 export const Posts = () => {
   const [posts, setPosts] = useState<PostProps[]>([]);
 
-  const getPost = async () => {
-    const postsQuery = await query(
-      collection(db, "posts"),
-      orderBy("createdAt", "desc"),
-      limit(3)
-    );
-    const postData = await getDocs(postsQuery);
-    const posts = postData.docs.map((doc) => {
-      const { userName, photo, text, userId, createdAt } = doc.data();
-      return {
-        userName,
-        photo,
-        text,
-        userId,
-        createdAt,
-        id: doc.id,
-      };
-    });
-    setPosts(posts);
-  };
-
   useEffect(() => {
+    let unsub: Unsubscribe | null = null;
+
+    const getPost = async () => {
+      const postsQuery = await query(
+        collection(db, "posts"),
+        orderBy("createdAt", "desc"),
+        limit(3)
+      );
+      /* 
+      const postData = await getDocs(postsQuery);
+      const posts = postData.docs.map((doc) => {
+        const { userName, photo, text, userId, createdAt } = doc.data();
+        return {
+          userName,
+          photo,
+          text,
+          userId,
+          createdAt,
+          id: doc.id,
+        };
+      });
+      */
+
+      /* onSnapshot을 통해 실시간으로 데이터 가져옴 */
+      unsub = await onSnapshot(postsQuery, (snapshot) => {
+        const posts = snapshot.docs.map((doc) => {
+          const { userName, photo, text, userId, createdAt } = doc.data();
+
+          return {
+            userName,
+            photo,
+            text,
+            userId,
+            createdAt,
+            id: doc.id,
+          };
+        });
+        setPosts(posts);
+      });
+    };
     getPost();
+
+    /* 리스너 분리 */
+    return () => {
+      unsub && unsub();
+    };
   }, []);
 
   return (
