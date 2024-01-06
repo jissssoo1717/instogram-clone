@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { PostProps } from "./posts";
+import { useEffect, useState } from "react";
 
 const Container = styled.div`
   width: 100%;
-  max-height: 750px;
+  // max-height: 750px;
   margin: 20px 0;
+  padding-bottom: 100px;
 `;
 const Head = styled.div`
   width: 100%;
@@ -26,7 +28,7 @@ const UserIcon = styled.img`
   margin: 0 2px;
 `;
 const UserName = styled.span`
-  // 사용자 정보의 닉네임(이름)을 가져올 예정
+  // 사용자 정보의 닉네임(이름)
   margin-left: 5px;
   font-weight: bold;
 `;
@@ -41,10 +43,8 @@ const OptButton = styled.button`
   }
 `;
 const Body = styled.div`
-  position: relative;
   width: 100%;
-  height: 650px;
-  max-height: 700px;
+  padding-bottom: 100px;
 `;
 const PostImage = styled.img`
   // 사용자가 게시글 작성 후 해당 이미지 불러옴
@@ -57,20 +57,32 @@ const PostUIs = styled.div`
   height: 40px;
 `;
 
-const PostText = styled.div`
+const PostText = styled.div<{ haslinebreaks: boolean; istextover: boolean }>`
+  // 사용자가 게시글 작성 후 해당 글 불러옴
   width: 100%;
-  //max-height: 100px;
-  //padding: 10px 2px;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  font-size: 14px;
+  ${({ haslinebreaks, istextover }) =>
+    haslinebreaks || istextover
+      ? "white-space:nowrap;"
+      : "white-space:pre-line;"};
+`;
+
+const ShowMoreButton = styled.button`
+  border: none;
+  background-color: transparent;
+  padding: 5px 0;
+  font-size: 15px;
+  color: #616161;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Comments = styled.div`
   width: 100%;
-  position: absolute;
-  bottom: 0;
-  padding: 10px 2px;
+  padding: 5px 0;
   margin-bottom: 10px;
   border-bottom: 1px solid #a4a4a4;
 `;
@@ -84,9 +96,23 @@ const CommentTextarea = styled.textarea`
 `;
 
 export const PostForm = ({ userName, photo, text }: PostProps) => {
+  const [hasLineBreaks, setHasLineBreaks] = useState(false);
+  const [istextOver, setIstextOver] = useState(false);
+  useEffect(() => {
+    {
+      /\n|\r/.test(text) ? setHasLineBreaks(true) : "";
+    }
+    {
+      text.length >= 33 ? setIstextOver(true) : "";
+    }
+  }, []);
+
+  const onShowTextMore = () => {
+    setHasLineBreaks(false);
+    setIstextOver(false);
+  };
+
   return (
-    //<Container>
-    //<Posts>
     <Container>
       <Head>
         <UserInfo>
@@ -99,7 +125,13 @@ export const PostForm = ({ userName, photo, text }: PostProps) => {
       <Body>
         <PostImage src={photo} />
         <PostUIs></PostUIs>
-        <PostText>{text}</PostText>
+        <PostText haslinebreaks={hasLineBreaks} istextover={istextOver}>
+          {hasLineBreaks ? text.split("\n")[0] + "..." : text}
+        </PostText>
+        <ShowMoreButton onClick={onShowTextMore}>
+          {hasLineBreaks || istextOver ? "더 보기" : null}
+        </ShowMoreButton>
+
         <Comments>
           <CommentTextarea
             placeholder="댓글 달기..."
@@ -109,7 +141,5 @@ export const PostForm = ({ userName, photo, text }: PostProps) => {
         </Comments>
       </Body>
     </Container>
-    //</Posts>
-    //</Container>
   );
 };
