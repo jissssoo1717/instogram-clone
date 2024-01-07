@@ -80,7 +80,10 @@ const ShowMoreButton = styled.button`
   }
 `;
 
-const Comments = styled.div`
+const Comments = styled.form`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   padding: 5px 0;
   margin-bottom: 10px;
@@ -88,24 +91,47 @@ const Comments = styled.div`
 `;
 
 const CommentTextarea = styled.textarea`
-  width: 400px;
+  width: 90%;
+  display: inline;
   resize: none;
   text-decoration: none;
   border: none;
   background-color: transparent;
 `;
 
+const CommentButton = styled.button`
+  color: #4bb2f2;
+  font-weight: bold;
+  border: none;
+  background-color: transparent;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 export const PostForm = ({ userName, photo, text }: PostProps) => {
   const [hasLineBreaks, setHasLineBreaks] = useState(false);
   const [istextOver, setIstextOver] = useState(false);
+  const [comment, setComment] = useState("");
+
   useEffect(() => {
     {
-      /\n|\r/.test(text) ? setHasLineBreaks(true) : "";
+      /\n|\r/.test(text) ? setHasLineBreaks(true) : undefined;
     }
     {
-      text.length >= 33 ? setIstextOver(true) : "";
+      text.length >= 33 ? setIstextOver(true) : undefined;
     }
   }, []);
+
+  const onChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value);
+  };
+
+  const onSendComment = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(comment);
+    setComment("");
+  };
 
   const onShowTextMore = () => {
     setHasLineBreaks(false);
@@ -129,15 +155,21 @@ export const PostForm = ({ userName, photo, text }: PostProps) => {
           {hasLineBreaks ? text.split("\n")[0] + "..." : text}
         </PostText>
         <ShowMoreButton onClick={onShowTextMore}>
-          {hasLineBreaks || istextOver ? "더 보기" : null}
+          {hasLineBreaks || istextOver ? "더 보기" : undefined}
         </ShowMoreButton>
 
-        <Comments>
+        <Comments onSubmit={onSendComment}>
           <CommentTextarea
             placeholder="댓글 달기..."
+            value={comment}
             rows={1}
             maxLength={140}
+            onChange={onChangeComment}
+            required
           />
+          <CommentButton type="submit">
+            {comment.length > 0 ? "게시" : null}
+          </CommentButton>
         </Comments>
       </Body>
     </Container>
