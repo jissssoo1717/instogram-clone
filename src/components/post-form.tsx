@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { PostProps } from "./posts";
 import { useEffect, useState } from "react";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
 
 const Container = styled.div`
   width: 100%;
@@ -109,7 +111,7 @@ const CommentButton = styled.button`
   }
 `;
 
-export const PostForm = ({ userName, photo, text }: PostProps) => {
+export const PostForm = ({ userName, photo, text, id }: PostProps) => {
   const [hasLineBreaks, setHasLineBreaks] = useState(false);
   const [istextOver, setIstextOver] = useState(false);
   const [comment, setComment] = useState("");
@@ -127,10 +129,22 @@ export const PostForm = ({ userName, photo, text }: PostProps) => {
     setComment(e.target.value);
   };
 
-  const onSendComment = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSendComment = async (e: React.FormEvent<HTMLFormElement>) => {
+    const user = auth.currentUser;
+
     e.preventDefault();
-    console.log(comment);
-    setComment("");
+    if (!user || comment === "" || comment.length > 140) return;
+    try {
+      const commentsRef = doc(collection(db, "posts", id, "comments"));
+      await setDoc(commentsRef, {
+        userName: user.displayName,
+        comment,
+      });
+
+      setComment("");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const onShowTextMore = () => {
