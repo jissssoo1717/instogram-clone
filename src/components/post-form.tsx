@@ -3,6 +3,7 @@ import { PostProps } from "./posts";
 import { useEffect, useState } from "react";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
+import { CommentList } from "./comment-list";
 
 const Container = styled.div`
   width: 100%;
@@ -65,10 +66,8 @@ const PostText = styled.div<{ haslinebreaks: boolean; istextover: boolean }>`
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 14px;
-  ${({ haslinebreaks, istextover }) =>
-    haslinebreaks || istextover
-      ? "white-space:nowrap;"
-      : "white-space:pre-line;"};
+  white-space: ${({ haslinebreaks, istextover }) =>
+    haslinebreaks || istextover ? "nowrap;" : "pre-line;"};
 `;
 
 const ShowMoreButton = styled.button`
@@ -117,12 +116,11 @@ export const PostForm = ({ userName, photo, text, id }: PostProps) => {
   const [comment, setComment] = useState("");
 
   useEffect(() => {
-    {
-      /\n|\r/.test(text) ? setHasLineBreaks(true) : undefined;
-    }
-    {
-      text.length >= 33 ? setIstextOver(true) : undefined;
-    }
+    const hasLineBreaksValue = /\n|\r/.test(text);
+    const istextOverValue = text.length >= 33;
+
+    setHasLineBreaks(hasLineBreaksValue);
+    setIstextOver(istextOverValue);
   }, []);
 
   const onChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -169,8 +167,10 @@ export const PostForm = ({ userName, photo, text, id }: PostProps) => {
           {hasLineBreaks ? text.split("\n")[0] + "..." : text}
         </PostText>
         <ShowMoreButton onClick={onShowTextMore}>
-          {hasLineBreaks || istextOver ? "더 보기" : undefined}
+          {hasLineBreaks || istextOver ? "더 보기" : null}
         </ShowMoreButton>
+
+        <CommentList />
 
         <Comments onSubmit={onSendComment}>
           <CommentTextarea

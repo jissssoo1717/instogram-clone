@@ -88,6 +88,7 @@ export const Signup = () => {
             type="password"
             value={password}
             name="password"
+            maxLength={16}
             placeholder="비밀번호"
             onChange={onChange}
             required

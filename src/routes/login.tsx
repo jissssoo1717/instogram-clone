@@ -59,6 +59,7 @@ export const Login = () => {
           <Input
             type="password"
             value={password}
+            maxLength={16}
             name="password"
             placeholder="비밀번호"
             onChange={onChange}
