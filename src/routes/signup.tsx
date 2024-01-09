@@ -85,6 +85,7 @@ export const Signup = () => {
             required
           />
           <Input
+            type="password"
             value={password}
             name="password"
             placeholder="비밀번호"
