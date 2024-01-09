@@ -137,6 +137,7 @@ export const PostForm = ({ userName, photo, text, id }: PostProps) => {
       await setDoc(commentsRef, {
         userName: user.displayName,
         comment,
+        createdAt: Date.now(),
       });
 
       setComment("");
@@ -170,7 +171,7 @@ export const PostForm = ({ userName, photo, text, id }: PostProps) => {
           {hasLineBreaks || istextOver ? "더 보기" : null}
         </ShowMoreButton>
 
-        <CommentList />
+        <CommentList docid={id} />
 
         <Comments onSubmit={onSendComment}>
           <CommentTextarea
