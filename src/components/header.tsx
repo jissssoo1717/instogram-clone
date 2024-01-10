@@ -3,7 +3,7 @@ import { Menu } from "../components/home-menu";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.header`
-  width: 20%;
+  width: 300px;
   height: 100%;
   border-right: 1px solid #dbdbdb;
   position: fixed;
