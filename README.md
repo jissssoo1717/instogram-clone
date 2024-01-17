@@ -1,30 +1,18 @@
-# React + TypeScript + Vite
+# Instogram
+인스타그램을 클론 코딩한 프로젝트입니다.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 프로젝트 구성
+1. 회원가입/로그인 기능 구현
+2. 인증되지 않은 사용자 제한
+3. 인스타그램 메인 페이지 구현
+   3-1. 작성한 게시글이 홈페이지에 실시간 렌더링됨.
+   3-2. 댓글 기능
+4. 게시글 등록 기능
+   4-1. 이미지 등록
+   4-2. 게시글 등록
+5. 프로필 페이지(구현중)
+   
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+# 개발 환경
++ Front-end: React.js, HTML, CSS, TypeScript, JavaScript 
++ Back-end: Firebase
