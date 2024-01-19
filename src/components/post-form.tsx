@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { PostProps } from "./posts";
 import { useEffect, useState } from "react";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { CommentList } from "./comment-list";
+import { LikeButton } from "./like-button";
 
 const Container = styled.div`
   width: 100%;
@@ -55,9 +56,13 @@ const PostImage = styled.img`
   height: 500px;
   border-radius: 4px;
 `;
+
 const PostUIs = styled.div`
   width: 100%;
   height: 40px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
 `;
 
 const PostText = styled.div<{ haslinebreaks: boolean; istextover: boolean }>`
@@ -110,11 +115,14 @@ const CommentButton = styled.button`
   }
 `;
 
-export const PostForm = ({ userName, photo, text, id }: PostProps) => {
+export const PostForm = ({ userName, photo, text, id, userId }: PostProps) => {
   const [hasLineBreaks, setHasLineBreaks] = useState(false);
   const [istextOver, setIstextOver] = useState(false);
+  //const [isClickedLike, setIsClickedLike] = useState(false);
+  //const [like, setLike] = useState(0);
   const [comment, setComment] = useState("");
 
+  // 게시글이 33자 이상 넘어가는지 + 줄바꿈이 있는지 체크
   useEffect(() => {
     const hasLineBreaksValue = /\n|\r/.test(text);
     const istextOverValue = text.length >= 33;
@@ -122,6 +130,11 @@ export const PostForm = ({ userName, photo, text, id }: PostProps) => {
     setHasLineBreaks(hasLineBreaksValue);
     setIstextOver(istextOverValue);
   }, []);
+
+  const onShowTextMore = () => {
+    setHasLineBreaks(false);
+    setIstextOver(false);
+  };
 
   const onChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -146,11 +159,6 @@ export const PostForm = ({ userName, photo, text, id }: PostProps) => {
     }
   };
 
-  const onShowTextMore = () => {
-    setHasLineBreaks(false);
-    setIstextOver(false);
-  };
-
   return (
     <Container>
       <Head>
@@ -163,7 +171,9 @@ export const PostForm = ({ userName, photo, text, id }: PostProps) => {
 
       <Body>
         <PostImage src={photo} />
-        <PostUIs></PostUIs>
+        <PostUIs>
+          <LikeButton />
+        </PostUIs>
         <PostText haslinebreaks={hasLineBreaks} istextover={istextOver}>
           {hasLineBreaks ? text.split("\n")[0] + "..." : text}
         </PostText>

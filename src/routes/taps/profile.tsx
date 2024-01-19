@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Container } from "../../components/taps-components";
 import styled from "styled-components";
+import { PostProps } from "../../components/posts";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { auth, storage } from "../../firebase";
+import { ImageContainer } from "../../components/profile-images";
 
 const Tap = styled.div`
   display: flex;
@@ -44,14 +48,24 @@ const UserPosts = styled.div`
   margin: 30px 0;
 `;
 
-const TestPostImage = styled.div`
-  background-color: bisque;
-`;
-
 export const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [images, setImages] = useState<string[]>([]);
+  const user = auth.currentUser;
+  const imgRef = ref(storage, `posts/${user?.uid}`);
+
+  // if (isLoading || !user) return;
+
   useEffect(() => {
     setTimeout(() => setIsLoading(false), 1000);
+    setImages([]);
+    listAll(imgRef).then((res) => {
+      res.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setImages((prev) => [...prev, url]);
+        });
+      });
+    });
   }, []);
 
   return (
@@ -65,20 +79,10 @@ export const Profile = () => {
             </UserInfo>
 
             <UserPosts>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
-              <TestPostImage></TestPostImage>
+              {/* <ImageContainer image={image} /> */}
+              {images.map((image) => (
+                <ImageContainer key={Math.random()} image={image} />
+              ))}
             </UserPosts>
           </ProfileForm>
         </Tap>
