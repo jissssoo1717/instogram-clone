@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container } from "../../components/taps-components";
 import styled from "styled-components";
-import { PostProps } from "../../components/posts";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { auth, storage } from "../../firebase";
 import { ImageContainer } from "../../components/profile-images";
@@ -54,11 +53,9 @@ export const Profile = () => {
   const user = auth.currentUser;
   const imgRef = ref(storage, `posts/${user?.uid}`);
 
-  // if (isLoading || !user) return;
-
-  useEffect(() => {
-    setTimeout(() => setIsLoading(false), 1000);
+  const getPostImages = () => {
     setImages([]);
+
     listAll(imgRef).then((res) => {
       res.items.forEach((item) => {
         getDownloadURL(item).then((url) => {
@@ -66,6 +63,12 @@ export const Profile = () => {
         });
       });
     });
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    setTimeout(getPostImages, 1000);
   }, []);
 
   return (
@@ -79,9 +82,8 @@ export const Profile = () => {
             </UserInfo>
 
             <UserPosts>
-              {/* <ImageContainer image={image} /> */}
               {images.map((image) => (
-                <ImageContainer key={Math.random()} image={image} />
+                <ImageContainer key={Math.random()} $image={image} />
               ))}
             </UserPosts>
           </ProfileForm>
