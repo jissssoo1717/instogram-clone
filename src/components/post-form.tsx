@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { PostProps } from "./posts";
 import { useEffect, useState } from "react";
-import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { CommentList } from "./comment-list";
 import { LikeButton } from "./like-button";
@@ -115,7 +115,7 @@ const CommentButton = styled.button`
   }
 `;
 
-export const PostForm = ({ userName, photo, text, id, userId }: PostProps) => {
+export const PostForm = ({ userName, photo, text, id }: PostProps) => {
   const [hasLineBreaks, setHasLineBreaks] = useState(false);
   const [istextOver, setIstextOver] = useState(false);
   //const [isClickedLike, setIsClickedLike] = useState(false);

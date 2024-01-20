@@ -63,13 +63,15 @@ export const Profile = () => {
         });
       });
     });
-
-    setIsLoading(false);
   };
 
   useEffect(() => {
-    setTimeout(getPostImages, 1000);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   }, []);
+
+  useEffect(getPostImages, [isLoading]);
 
   return (
     <Container>
@@ -78,7 +80,7 @@ export const Profile = () => {
           <ProfileForm>
             <UserInfo>
               <UserIcon src="/profile.svg" />
-              <UserForm>닉넴</UserForm>
+              <UserForm>{user?.displayName}</UserForm>
             </UserInfo>
 
             <UserPosts>
