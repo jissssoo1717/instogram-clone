@@ -65,14 +65,15 @@ const PostUIs = styled.div`
   margin-bottom: 5px;
 `;
 
-const PostText = styled.div<{ haslinebreaks: boolean; istextover: boolean }>`
+const PostText = styled.div<{ $haslinebreaks: boolean; $istextover: boolean }>`
   // 사용자가 게시글 작성 후 해당 글 불러옴
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 14px;
-  white-space: ${({ haslinebreaks, istextover }) =>
-    haslinebreaks || istextover ? "nowrap;" : "pre-line;"};
+  line-height: 20px;
+  white-space: ${({ $haslinebreaks, $istextover }) =>
+    $haslinebreaks || $istextover ? "nowrap;" : "pre-line;"};
 `;
 
 const ShowMoreButton = styled.button`
@@ -86,6 +87,7 @@ const ShowMoreButton = styled.button`
   }
 `;
 
+// 댓글
 const Comments = styled.form`
   display: flex;
   justify-content: space-between;
@@ -95,7 +97,6 @@ const Comments = styled.form`
   margin-bottom: 10px;
   border-bottom: 1px solid #a4a4a4;
 `;
-
 const CommentTextarea = styled.textarea`
   width: 90%;
   display: inline;
@@ -104,7 +105,6 @@ const CommentTextarea = styled.textarea`
   border: none;
   background-color: transparent;
 `;
-
 const CommentButton = styled.button`
   color: #4bb2f2;
   font-weight: bold;
@@ -174,12 +174,12 @@ export const PostForm = ({ userName, photo, text, id, userId }: PostProps) => {
         <PostUIs>
           <LikeButton />
         </PostUIs>
-        <PostText haslinebreaks={hasLineBreaks} istextover={istextOver}>
+        <PostText $haslinebreaks={hasLineBreaks} $istextover={istextOver}>
           {hasLineBreaks ? text.split("\n")[0] + "..." : text}
         </PostText>
-        <ShowMoreButton onClick={onShowTextMore}>
-          {hasLineBreaks || istextOver ? "더 보기" : null}
-        </ShowMoreButton>
+        {hasLineBreaks || istextOver ? (
+          <ShowMoreButton onClick={onShowTextMore}>더 보기</ShowMoreButton>
+        ) : null}
 
         <CommentList docid={id} />
 
