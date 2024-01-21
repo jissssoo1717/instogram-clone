@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Container } from "../../components/taps-components";
 import styled from "styled-components";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
-import { auth, storage } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { ImageContainer } from "../../components/profile-images";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 
 const Tap = styled.div`
   display: flex;
@@ -11,12 +11,10 @@ const Tap = styled.div`
   position: absolute;
   left: 300px;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.25);
 `;
 
 const ProfileForm = styled.div`
   width: 1000px;
-  background-color: aliceblue;
 `;
 
 const UserInfo = styled.div`
@@ -24,7 +22,7 @@ const UserInfo = styled.div`
   height: 200px;
   display: flex;
   align-items: center;
-  background-color: rebeccapurple;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 `;
 
 const UserIcon = styled.img`
@@ -35,7 +33,6 @@ const UserIcon = styled.img`
 
 const UserForm = styled.div`
   margin-left: 50px;
-  background-color: steelblue;
 `;
 const UserPosts = styled.div`
   display: grid;
@@ -51,19 +48,6 @@ export const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState<string[]>([]);
   const user = auth.currentUser;
-  const imgRef = ref(storage, `posts/${user?.uid}`);
-
-  const getPostImages = () => {
-    setImages([]);
-
-    listAll(imgRef).then((res) => {
-      res.items.forEach((item) => {
-        getDownloadURL(item).then((url) => {
-          setImages((prev) => [...prev, url]);
-        });
-      });
-    });
-  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -71,7 +55,22 @@ export const Profile = () => {
     }, 1000);
   }, []);
 
-  useEffect(getPostImages, [isLoading]);
+  useEffect(() => {
+    setImages([]);
+
+    const getPostImages = async () => {
+      const imgRef = collection(db, "posts");
+      const imageQuery = await query(imgRef, orderBy("createdAt", "desc"));
+      const snapshots = await getDocs(imageQuery);
+
+      snapshots.docs.map((doc) => {
+        const { photo } = doc.data();
+        setImages((prev) => [...prev, photo]);
+      });
+    };
+
+    getPostImages();
+  }, [isLoading]);
 
   return (
     <Container>
@@ -85,7 +84,7 @@ export const Profile = () => {
 
             <UserPosts>
               {images.map((image) => (
-                <ImageContainer key={Math.random()} $image={image} />
+                <ImageContainer key={image} $image={image} />
               ))}
             </UserPosts>
           </ProfileForm>
