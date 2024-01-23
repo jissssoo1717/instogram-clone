@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Container } from "../../components/taps-components";
 import styled from "styled-components";
 import { auth, db } from "../../firebase";
@@ -29,6 +29,13 @@ const UserIcon = styled.img`
   width: 170px;
   height: 170px;
   margin: 0 50px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const ProfileImageInput = styled.input`
+  display: none;
 `;
 
 const UserForm = styled.div`
@@ -43,6 +50,8 @@ const UserPosts = styled.div`
   gap: 30px;
   margin: 30px 0;
 `;
+
+// 프로필 이미지
 
 export const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -72,13 +81,25 @@ export const Profile = () => {
     getPostImages();
   }, [isLoading]);
 
+  const changeProfileImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+  };
   return (
     <Container>
       {isLoading ? null : (
         <Tap>
           <ProfileForm>
             <UserInfo>
-              <UserIcon src="/profile.svg" />
+              <label htmlFor="chooseUserIcon">
+                <UserIcon src="/profile.svg" />
+              </label>
+
+              <ProfileImageInput
+                id="chooseUserIcon"
+                type="file"
+                accept="image/*"
+                onChange={changeProfileImg}
+              />
               <UserForm>{user?.displayName}</UserForm>
             </UserInfo>
 
