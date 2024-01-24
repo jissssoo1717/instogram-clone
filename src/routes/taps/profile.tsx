@@ -65,12 +65,30 @@ export const Profile = () => {
   const [profileImageUrl, setProfileImageUrl] = useState("");
   const user = auth.currentUser;
 
+  // Initialize Loading and Profile Image
   useEffect(() => {
+    const initProfileImg = async () => {
+      try {
+        const url = await getDownloadURL(ref(storage, `profile/${user?.uid}`));
+        setProfileImageUrl(url);
+        setIsProfileImage(true);
+      } catch (error) {
+        /* Return이 Promise면 파이어베이스 에러 발생
+          ==> 해결 방법 찾기
+        */
+        setProfileImageUrl("");
+        setIsProfileImage(false);
+      }
+    };
+
+    initProfileImg();
+
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
   }, []);
 
+  // Initialize Posted Images
   useEffect(() => {
     setImages([]);
 
@@ -88,9 +106,24 @@ export const Profile = () => {
     getPostImages();
   }, [isLoading]);
 
+  // Set User's Profile Image
   useEffect(() => {
-    console.log(profileImageUrl);
-  }, [isProfileImage]);
+    const uploadProfileImg = async () => {
+      try {
+        if (profileImage === null) return;
+
+        const imageRef = ref(storage, `profile/${user?.uid}`);
+        const result = await uploadBytes(imageRef, profileImage);
+
+        const url = await getDownloadURL(result.ref);
+        setProfileImageUrl(url);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    uploadProfileImg();
+  }, [profileImage]);
 
   const changeProfileImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -99,18 +132,6 @@ export const Profile = () => {
     if (files && files.length === 1) {
       setProfileImage(files[0]);
       setIsProfileImage(true);
-    }
-
-    if (profileImage === null) return;
-
-    try {
-      const imageRef = ref(storage, `profile/${user?.uid}`);
-      const result = await uploadBytes(imageRef, profileImage);
-
-      const url = await getDownloadURL(result.ref);
-      setProfileImageUrl(url);
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -121,7 +142,7 @@ export const Profile = () => {
           <ProfileForm>
             <UserInfo>
               <label htmlFor="chooseUserIcon">
-                {profileImage === null ? (
+                {isProfileImage === false ? (
                   <UserIcon
                     src="/profile.svg"
                     $isprofileimage={isProfileImage}
