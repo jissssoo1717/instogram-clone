@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container } from "../../components/taps-components";
 import styled from "styled-components";
-import { auth, db } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
 import { ImageContainer } from "../../components/profile-images";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const Tap = styled.div`
   display: flex;
@@ -25,10 +26,13 @@ const UserInfo = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 `;
 
-const UserIcon = styled.img`
+const UserIcon = styled.img<{ $isprofileimage: boolean }>`
   width: 170px;
   height: 170px;
   margin: 0 50px;
+  border: ${({ $isprofileimage }) =>
+    $isprofileimage ? "1px solid #bdbdbd;" : "none;"};
+  border-radius: 50%;
   &:hover {
     cursor: pointer;
   }
@@ -56,6 +60,9 @@ const UserPosts = styled.div`
 export const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState<string[]>([]);
+  const [isProfileImage, setIsProfileImage] = useState(false);
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profileImageUrl, setProfileImageUrl] = useState("");
   const user = auth.currentUser;
 
   useEffect(() => {
@@ -81,9 +88,32 @@ export const Profile = () => {
     getPostImages();
   }, [isLoading]);
 
-  const changeProfileImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+  useEffect(() => {
+    console.log(profileImageUrl);
+  }, [isProfileImage]);
+
+  const changeProfileImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    setIsProfileImage(false);
+
+    if (files && files.length === 1) {
+      setProfileImage(files[0]);
+      setIsProfileImage(true);
+    }
+
+    if (profileImage === null) return;
+
+    try {
+      const imageRef = ref(storage, `profile/${user?.uid}`);
+      const result = await uploadBytes(imageRef, profileImage);
+
+      const url = await getDownloadURL(result.ref);
+      setProfileImageUrl(url);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   return (
     <Container>
       {isLoading ? null : (
@@ -91,7 +121,17 @@ export const Profile = () => {
           <ProfileForm>
             <UserInfo>
               <label htmlFor="chooseUserIcon">
-                <UserIcon src="/profile.svg" />
+                {profileImage === null ? (
+                  <UserIcon
+                    src="/profile.svg"
+                    $isprofileimage={isProfileImage}
+                  />
+                ) : (
+                  <UserIcon
+                    src={profileImageUrl}
+                    $isprofileimage={isProfileImage}
+                  />
+                )}
               </label>
 
               <ProfileImageInput
