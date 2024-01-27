@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Container } from "../../components/taps-components";
 import styled from "styled-components";
-import { db } from "../../firebase";
 import { ImageContainer } from "../../components/profile-images";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { UserInfo } from "../../components/user-info";
+import { ProfileOption } from "../modals/profile-opt-modal";
+import { db } from "../../firebase";
 
 const Tap = styled.div`
   display: flex;
@@ -31,6 +32,7 @@ const UserPosts = styled.div`
 export const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState<string[]>([]);
+  const [isOptClicked, setIsOptClicked] = useState(false);
 
   // Initialize Loading
   useEffect(() => {
@@ -57,12 +59,21 @@ export const Profile = () => {
     getPostImages();
   }, [isLoading]);
 
+  const profileOptionOpen = () => {
+    setIsOptClicked(true);
+  };
+
+  const profileOptionClose = () => {
+    setIsOptClicked(false);
+  };
+
   return (
     <Container>
-      {isLoading ? null : (
+      {isOptClicked && <ProfileOption optionCloseHandle={profileOptionClose} />}
+      {!isLoading && (
         <Tap>
           <ProfileForm>
-            <UserInfo />
+            <UserInfo optionOpenHandle={profileOptionOpen} />
 
             <UserPosts>
               {images.map((image) => (

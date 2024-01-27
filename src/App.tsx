@@ -76,6 +76,7 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+
   const init = async () => {
     /* Firebase의 초기 인증 상태 확인 */
     await auth.authStateReady();

@@ -49,12 +49,17 @@ const UserForm = styled.div`
   width: 100%;
 `;
 
-export const UserInfo = () => {
+type Props = {
+  optionOpenHandle: () => void;
+};
+
+export const UserInfo = ({ optionOpenHandle }: Props) => {
   const user = auth.currentUser;
   const [isProfileImage, setIsProfileImage] = useState(false);
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [profileImageUrl, setProfileImageUrl] = useState("");
 
+  // Initialize Profile Image
   useEffect(() => {
     const initProfileImg = async () => {
       try {
@@ -122,7 +127,7 @@ export const UserInfo = () => {
 
       <UserForm>
         <span>{user?.displayName}</span>
-        <ProfileOptionButton></ProfileOptionButton>
+        <ProfileOptionButton onClick={optionOpenHandle}></ProfileOptionButton>
       </UserForm>
     </Container>
   );
