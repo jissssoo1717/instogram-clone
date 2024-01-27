@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container, Tap } from "../../components/taps-components";
 import { auth } from "../../firebase";
-import { PostForm } from "../../components/post-form";
+
 import { Posts } from "../../components/posts";
 
 export const Home = () => {
