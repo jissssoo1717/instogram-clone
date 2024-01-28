@@ -49,35 +49,19 @@ const UserForm = styled.div`
   width: 100%;
 `;
 
-type Props = {
+interface Props {
   optionOpenHandle: () => void;
-};
+  isProfileImage: boolean;
+  setIsProfileImage: (isProfileImage: boolean) => void;
+  profileImageUrl: string;
+  setProfileImageUrl: (profileImageUrl: string) => void;
+}
 
-export const UserInfo = ({ optionOpenHandle }: Props) => {
+export const UserInfo = (props: Props) => {
   const user = auth.currentUser;
-  const [isProfileImage, setIsProfileImage] = useState(false);
+  const isProfileImage = props.isProfileImage;
+  const profileImageUrl = props.profileImageUrl;
   const [profileImage, setProfileImage] = useState<File | null>(null);
-  const [profileImageUrl, setProfileImageUrl] = useState("");
-
-  // Initialize Profile Image
-  useEffect(() => {
-    const initProfileImg = async () => {
-      try {
-        const profileRef = ref(storage, `profile/${user?.uid}`);
-        const url = await getDownloadURL(profileRef);
-        console.log(url);
-        setProfileImageUrl(url);
-        setIsProfileImage(true);
-      } catch (error) {
-        /* Return이 Promise면 파이어베이스 에러 발생
-          ==> 해결 방법 찾기
-        */
-        setProfileImageUrl("");
-        setIsProfileImage(false);
-      }
-    };
-    initProfileImg();
-  }, []);
 
   // Set User's Profile Image
   useEffect(() => {
@@ -89,7 +73,7 @@ export const UserInfo = ({ optionOpenHandle }: Props) => {
         const result = await uploadBytes(imageRef, profileImage);
 
         const url = await getDownloadURL(result.ref);
-        setProfileImageUrl(url);
+        props.setProfileImageUrl(url);
       } catch (error) {
         console.error(error);
       }
@@ -100,11 +84,11 @@ export const UserInfo = ({ optionOpenHandle }: Props) => {
 
   const changeProfileImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
-    setIsProfileImage(false);
+    props.setIsProfileImage(false);
 
     if (files && files.length === 1) {
       setProfileImage(files[0]);
-      setIsProfileImage(true);
+      props.setIsProfileImage(true);
     }
   };
 
@@ -127,7 +111,9 @@ export const UserInfo = ({ optionOpenHandle }: Props) => {
 
       <UserForm>
         <span>{user?.displayName}</span>
-        <ProfileOptionButton onClick={optionOpenHandle}></ProfileOptionButton>
+        <ProfileOptionButton
+          onClick={props.optionOpenHandle}
+        ></ProfileOptionButton>
       </UserForm>
     </Container>
   );

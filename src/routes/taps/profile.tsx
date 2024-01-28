@@ -3,9 +3,10 @@ import { Container } from "../../components/taps-components";
 import styled from "styled-components";
 import { ImageContainer } from "../../components/profile-images";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { UserInfo } from "../../components/user-info";
+import { UserInfo } from "../../components/profile-user-info";
 import { ProfileOption } from "../modals/profile-opt-modal";
-import { db } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
+import { getDownloadURL, ref } from "firebase/storage";
 
 const Tap = styled.div`
   display: flex;
@@ -30,15 +31,35 @@ const UserPosts = styled.div`
 `;
 
 export const Profile = () => {
+  const user = auth.currentUser;
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState<string[]>([]);
+  const [isProfileImage, setIsProfileImage] = useState(false);
+  const [profileImageUrl, setProfileImageUrl] = useState("");
   const [isOptClicked, setIsOptClicked] = useState(false);
 
   // Initialize Loading
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    const initProfileImg = async () => {
+      try {
+        const profileRef = ref(storage, `profile/${user?.uid}`);
+        const url = await getDownloadURL(profileRef);
+        console.log(url);
+        setProfileImageUrl(url);
+        setIsProfileImage(true);
+      } catch (error) {
+        /* Return이 Promise면 파이어베이스 에러 발생
+          ==> 해결 방법 찾기
+        */
+        setProfileImageUrl("");
+        setIsProfileImage(false);
+      } finally {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
+      }
+    };
+    initProfileImg();
   }, []);
 
   // Initialize Posted Images
@@ -73,7 +94,13 @@ export const Profile = () => {
       {!isLoading && (
         <Tap>
           <ProfileForm>
-            <UserInfo optionOpenHandle={profileOptionOpen} />
+            <UserInfo
+              optionOpenHandle={profileOptionOpen}
+              isProfileImage={isProfileImage}
+              profileImageUrl={profileImageUrl}
+              setIsProfileImage={setIsProfileImage}
+              setProfileImageUrl={setProfileImageUrl}
+            />
 
             <UserPosts>
               {images.map((image) => (

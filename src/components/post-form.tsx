@@ -3,8 +3,8 @@ import { PostProps } from "./posts";
 import { useEffect, useState } from "react";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
-import { CommentList } from "./comment-list";
-import { LikeButton } from "./like-button";
+import { CommentList } from "./post-comment-list";
+import { LikeButton } from "./post-like-button";
 
 const Container = styled.div`
   width: 100%;
