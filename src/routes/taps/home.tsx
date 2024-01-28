@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Container, Tap } from "../../components/taps-components";
-
 import { Posts } from "../../components/posts";
 
 export const Home = () => {

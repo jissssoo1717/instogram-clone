@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import { PostProps } from "./posts";
 import { useEffect, useState } from "react";
-import { collection, doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { collection, deleteDoc, doc, setDoc } from "firebase/firestore";
+import { auth, db, storage } from "../firebase";
 import { CommentList } from "./post-comment-list";
 import { LikeButton } from "./post-like-button";
+import { PostOption } from "../routes/modals/post-opt-modal";
+import { deleteObject, ref } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -115,12 +118,12 @@ const CommentButton = styled.button`
   }
 `;
 
-export const PostForm = ({ userName, photo, text, id }: PostProps) => {
+export const PostForm = ({ userName, photo, text, userId, id }: PostProps) => {
+  const user = auth.currentUser;
   const [hasLineBreaks, setHasLineBreaks] = useState(false);
   const [istextOver, setIstextOver] = useState(false);
-  //const [isClickedLike, setIsClickedLike] = useState(false);
-  //const [like, setLike] = useState(0);
   const [comment, setComment] = useState("");
+  const [isOptClicked, setIsOptClicked] = useState(false);
 
   // 게시글이 33자 이상 넘어가는지 + 줄바꿈이 있는지 체크
   useEffect(() => {
@@ -159,14 +162,40 @@ export const PostForm = ({ userName, photo, text, id }: PostProps) => {
     }
   };
 
+  const postOptionOpen = () => {
+    setIsOptClicked(true);
+  };
+
+  const postOptionClose = () => {
+    setIsOptClicked(false);
+  };
+
+  const deletePost = async () => {
+    if (user?.uid !== userId) return;
+
+    try {
+      const photoRef = ref(storage, `posts/${userId}/${id}`);
+      await deleteDoc(doc(db, "posts", id));
+      await deleteObject(photoRef);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Container>
+      {isOptClicked && (
+        <PostOption
+          optionCloseHandle={postOptionClose}
+          deleteHandle={deletePost}
+        />
+      )}
       <Head>
         <UserInfo>
           <UserIcon src="/profile.svg" />
           <UserName>{userName}</UserName>
         </UserInfo>
-        <OptButton></OptButton>
+        <OptButton onClick={postOptionOpen}></OptButton>
       </Head>
 
       <Body>
