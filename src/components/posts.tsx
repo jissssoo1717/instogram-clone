@@ -31,6 +31,8 @@ export interface PostProps {
   photo: string;
   text: string;
   createdAt: number;
+  likedUsers: Array<string>;
+  likes: number;
 }
 
 export const Posts = () => {
@@ -63,7 +65,8 @@ export const Posts = () => {
       /* onSnapshot을 통해 실시간으로 데이터 가져옴 */
       unsub = await onSnapshot(postsQuery, (snapshot) => {
         const posts = snapshot.docs.map((doc) => {
-          const { userName, photo, text, userId, createdAt } = doc.data();
+          const { userName, photo, text, userId, createdAt, likedUsers } =
+            doc.data();
 
           return {
             userName,
@@ -72,6 +75,8 @@ export const Posts = () => {
             userId,
             createdAt,
             id: doc.id,
+            likedUsers,
+            likes: likedUsers.length,
           };
         });
         setPosts(posts);

@@ -158,12 +158,13 @@ export const Upload = ({ onHide }: Props) => {
 
     try {
       // 이미지 경로 => posts/유저 아이디/문서 아이디
-
       const doc = await addDoc(collection(db, "posts"), {
         text,
         createdAt: Date.now(),
         userName: user.displayName,
         userId: user.uid,
+        likedUsers: [],
+        likes: 0,
       });
       const imageRef = ref(storage, `posts/${user.uid}/${doc.id}`);
       const result = await uploadBytes(imageRef, imageFile);

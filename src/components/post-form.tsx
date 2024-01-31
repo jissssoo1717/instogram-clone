@@ -7,7 +7,6 @@ import { CommentList } from "./post-comment-list";
 import { LikeButton } from "./post-like-button";
 import { PostOption } from "../routes/modals/post-opt-modal";
 import { deleteObject, ref } from "firebase/storage";
-import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -68,6 +67,11 @@ const PostUIs = styled.div`
   margin-bottom: 5px;
 `;
 
+const LikeSpan = styled.span`
+  font-size: 13px;
+  color: gray;
+`;
+
 const PostText = styled.div<{ $haslinebreaks: boolean; $istextover: boolean }>`
   // 사용자가 게시글 작성 후 해당 글 불러옴
   width: 100%;
@@ -118,7 +122,15 @@ const CommentButton = styled.button`
   }
 `;
 
-export const PostForm = ({ userName, photo, text, userId, id }: PostProps) => {
+export const PostForm = ({
+  userName,
+  photo,
+  text,
+  userId,
+  id,
+  likedUsers,
+  likes,
+}: PostProps) => {
   const user = auth.currentUser;
   const [hasLineBreaks, setHasLineBreaks] = useState(false);
   const [istextOver, setIstextOver] = useState(false);
@@ -201,8 +213,10 @@ export const PostForm = ({ userName, photo, text, userId, id }: PostProps) => {
       <Body>
         <PostImage src={photo} />
         <PostUIs>
-          <LikeButton />
+          <LikeButton docId={id} likedUsers={likedUsers} />
+          <LikeSpan>좋아요 {likes}개</LikeSpan>
         </PostUIs>
+
         <PostText $haslinebreaks={hasLineBreaks} $istextover={istextOver}>
           {hasLineBreaks ? text.split("\n")[0] + "..." : text}
         </PostText>
