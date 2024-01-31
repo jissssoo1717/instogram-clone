@@ -64,6 +64,7 @@ export const Profile = () => {
 
   // Initialize Posted Images
   useEffect(() => {
+    if (isLoading) return;
     setImages([]);
 
     const getPostImages = async () => {
@@ -72,8 +73,8 @@ export const Profile = () => {
       const snapshots = await getDocs(imageQuery);
 
       snapshots.docs.map((doc) => {
-        const { photo } = doc.data();
-        setImages((prev) => [...prev, photo]);
+        const { photo, userId } = doc.data();
+        if (user?.uid === userId) setImages((prev) => [...prev, photo]);
       });
     };
 
