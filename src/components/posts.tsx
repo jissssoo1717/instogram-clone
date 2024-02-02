@@ -45,7 +45,7 @@ export const Posts = () => {
       const postsQuery = await query(
         collection(db, "posts"),
         orderBy("createdAt", "desc"),
-        limit(1)
+        limit(3)
       );
       /* 
       const postData = await getDocs(postsQuery);
