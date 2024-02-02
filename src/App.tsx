@@ -79,6 +79,7 @@ function App() {
 
   const init = async () => {
     /* Firebase의 초기 인증 상태 확인 */
+    if (!isLoading) return;
     await auth.authStateReady();
     setIsLoading(false);
   };

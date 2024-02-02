@@ -49,7 +49,7 @@ export const CommentList = ({ docid }: { docid: string }) => {
       );
       unsubscibe = await onSnapshot(commentsQuery, (snapshot) => {
         const comments = snapshot.docs.map((doc) => {
-          const { userName, comment, cid } = doc.data();
+          const { userName, comment } = doc.data();
 
           return {
             userName,
