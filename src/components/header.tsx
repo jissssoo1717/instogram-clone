@@ -40,7 +40,7 @@ export const Header = ({ onUploadBtnShow }: Props) => {
   return (
     <Container>
       <MenuList>
-        <Title onClick={() => navigator("/")}>Instagram</Title>
+        <Title onClick={() => navigator("/")}>Instogram</Title>
 
         <Menu svg="/home.svg" label="홈" onClick={() => navigator("/")} />
         <Menu

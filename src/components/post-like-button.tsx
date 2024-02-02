@@ -24,26 +24,28 @@ interface Props {
 }
 
 export const LikeButton = ({ docId, likedUsers }: Props) => {
-  const user = auth.currentUser;
+  const currentUser = auth.currentUser;
   const [isLoading, setIsLoading] = useState(true);
   const [isClicked, setIsClicked] = useState(false);
 
   //Initialize
   useEffect(() => {
-    if (!user) return;
-    if (likedUsers.includes(user.uid)) setIsClicked(true);
+    if (!currentUser) return;
+    if (likedUsers.includes(currentUser.uid)) setIsClicked(true);
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
   // Like Button Click ==> 분리하자
   useEffect(() => {
-    if (!user || isLoading) return;
+    if (!currentUser || isLoading) return;
 
     const getLikeInfo = async () => {
-      if (!likedUsers.includes(user.uid)) {
-        likedUsers.push(user.uid);
+      if (!likedUsers.includes(currentUser.uid)) {
+        likedUsers.push(currentUser.uid);
       } else {
-        likedUsers = likedUsers.filter((element) => element !== user.uid);
+        likedUsers = likedUsers.filter(
+          (element) => element !== currentUser.uid
+        );
       }
 
       const postRef = doc(db, "posts", docId);

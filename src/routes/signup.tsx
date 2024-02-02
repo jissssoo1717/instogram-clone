@@ -67,7 +67,7 @@ export const Signup = () => {
   return (
     <Container>
       <Div1>
-        <Title>Instagram</Title>
+        <Title>Instogram</Title>
         <Span>친구들의 사진과 동영상을 보려면 가입하세요.</Span>
         <Form onSubmit={onSubmit}>
           <Input

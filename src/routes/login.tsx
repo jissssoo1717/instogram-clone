@@ -48,7 +48,7 @@ export const Login = () => {
   return (
     <Container>
       <Div1>
-        <Title>Instagram</Title>
+        <Title>Instogram</Title>
         <Form onSubmit={onSubmit}>
           <Input
             value={email}
