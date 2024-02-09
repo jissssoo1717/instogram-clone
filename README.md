@@ -53,9 +53,45 @@ https://github.com/jissssoo1717/instogram-clone/assets/115405178/fb86653a-e604-4
 
 
 ## 3. 프로필 페이지
+
+
+https://github.com/jissssoo1717/instogram-clone/assets/115405178/5bc7b18f-e375-4e35-bba3-1ab9f90f9e51
+
+<br/><br/><br/>
+
+  * 프로필 이미지 변경
+
+
+https://github.com/jissssoo1717/instogram-clone/assets/115405178/3cc4dc89-961a-40c7-aef8-6dc86adb5e08
+
+
+<br/><br/><br/>
+
+
+   * 3열로 등록된 게시글의 이미지 배열
+
+
+
+https://github.com/jissssoo1717/instogram-clone/assets/115405178/11216d6e-64a4-4f6f-b5e5-8c9d9e485aac
+
+
+
+   <br/><br/><br/>
+
+   
+  * 프로필 페이지에서 로그아웃
+
+
+https://github.com/jissssoo1717/instogram-clone/assets/115405178/9a7a16a9-8251-4b86-be56-ae25e7a2f842
+
+   <br/><br/><br/>
+
+
    
 
 # 개발 환경
 
 + Front-end: React.js, HTML, CSS, TypeScript, JavaScript 
 + Back-end: Firebase
+
+<br/><br/><br/>
