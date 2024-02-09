@@ -5,7 +5,11 @@
 
 * 프로젝트 배포: [https://instogram-1c5f9.web.app](https://instogram-1c5f9.web.app)
 
-<br/><br/><br/>
+<br/>
+
+ (프로젝트 열람을 위해 접근 제한 기능(Protectd Route)을 잠시 비활성화 했습니다.)
+
+<br/>
 
 # 프로젝트 구성
 
