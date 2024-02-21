@@ -39,8 +39,7 @@ export const Signup = () => {
       );
       await updateProfile(userCredential.user, { displayName: name });
 
-      navigator("/");
-      /* 회원가입시, 바로 로그인 X, 로그인 페이지로 넘어가는 방법 찾기! */
+      navigator("/login");
     } catch (error) {
       console.error(error);
     } finally {

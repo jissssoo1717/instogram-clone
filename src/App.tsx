@@ -11,7 +11,7 @@ import { Reels } from "./routes/taps/reels";
 import { DM } from "./routes/taps/direct-message";
 import { useEffect, useState } from "react";
 import { auth } from "./firebase";
-import { ProtectedRoute } from "./protected-route";
+// import { ProtectedRoute } from "./protected-route";
 
 // Router를 통한 경로 지정
 const router = createBrowserRouter([
@@ -19,9 +19,9 @@ const router = createBrowserRouter([
     // 인증된 사용자만 Layout 내용 확인 가능
     path: "/",
     element: (
-      <ProtectedRoute>
-        <Layout />
-      </ProtectedRoute>
+      //<ProtectedRoute>
+      <Layout />
+      //</ProtectedRoute>
     ),
     children: [
       {

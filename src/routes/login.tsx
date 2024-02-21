@@ -11,6 +11,7 @@ import {
 } from "../components/auth-components";
 import { auth } from "../firebase";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import GitHubButton from "../components/github-btn";
 
 export const Login = () => {
   const navigator = useNavigate();
@@ -76,6 +77,7 @@ export const Login = () => {
           계정이 없으신가요? <Link to="/signup"> 가입하기</Link>
         </Switcher>
       </Div1>
+      <GitHubButton />
     </Container>
   );
 };
