@@ -11,6 +11,7 @@ import { Reels } from "./routes/taps/reels";
 import { DM } from "./routes/taps/direct-message";
 import { useEffect, useState } from "react";
 import { auth } from "./firebase";
+import { ResetPassword } from "./routes/reset-password";
 // import { ProtectedRoute } from "./protected-route";
 
 // Router를 통한 경로 지정
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+  },
+  {
+    path: "/password/reset",
+    element: <ResetPassword />,
   },
 ]);
 

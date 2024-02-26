@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Container,
@@ -10,7 +10,7 @@ import {
   Switcher,
 } from "../components/auth-components";
 import { auth } from "../firebase";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import GitHubButton from "../components/github-btn";
 
 export const Login = () => {
@@ -42,9 +42,6 @@ export const Login = () => {
       setPassword("");
     }
   };
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => console.log(user));
-  }, []);
 
   return (
     <Container>
@@ -68,7 +65,7 @@ export const Login = () => {
           <Button>로그인</Button>
           <Switcher>
             {/* 비밀번호 바꾸기 컴포넌트 생성 후 주소 지정 */}
-            <Link to="/">비밀번호를 잊으셨나요?</Link>
+            <Link to="/password/reset">비밀번호를 잊으셨나요?</Link>
           </Switcher>
         </Form>
       </Div1>
