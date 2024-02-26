@@ -106,7 +106,7 @@ https://github.com/jissssoo1717/instogram-clone/assets/115405178/9a7a16a9-8251-4
 # 이후에 추가할 기능
  + 로그인 페이지
    * 등록된 이메일을 이용한 '비밀번호 찾기/변경'
-   * 구글 계정으로 로그인
+   * Github 계정으로 로그인(O)
      
 
  + 홈 탭
