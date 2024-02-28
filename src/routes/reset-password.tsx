@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { Switcher } from "../components/auth-components";
 import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Container = styled.div`
   width: 100%;
@@ -87,10 +90,30 @@ const Button = styled.button`
 `;
 
 export const ResetPassword = () => {
+  const [email, setEmail] = useState("");
+
+  const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const sendToEmailForResetPW = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      sendPasswordResetEmail(auth, email).then(() => {
+        alert("이메일을 확인해주세요.");
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setEmail("");
+    }
+  };
+
   return (
     <Container>
       <Modal>
-        <Form>
+        <Form onSubmit={sendToEmailForResetPW}>
           <Block>
             <LockIcon src="/lock.svg" />
           </Block>
@@ -100,7 +123,12 @@ export const ResetPassword = () => {
             </Message>
           </Block>
           <Block>
-            <Input placeholder="이메일 주소" />
+            <Input
+              onChange={changeEmail}
+              placeholder="이메일 주소"
+              value={email}
+              type="email"
+            />
             <Button>재설정 링크 보내기</Button>
           </Block>
         </Form>
