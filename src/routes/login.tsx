@@ -12,6 +12,7 @@ import {
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import GitHubButton from "../components/github-btn";
+import { FirebaseError } from "firebase/app";
 
 export const Login = () => {
   const navigator = useNavigate();
@@ -35,8 +36,10 @@ export const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigator("/");
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      if(e instanceof FirebaseError) {
+        alert(e.message);
+      }
     } finally {
       setEmail("");
       setPassword("");

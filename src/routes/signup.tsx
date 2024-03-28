@@ -12,6 +12,7 @@ import {
 } from "../components/auth-components";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebase";
+import { FirebaseError } from "firebase/app";
 
 const Span = styled.span`
   width: 100%;
@@ -40,8 +41,10 @@ export const Signup = () => {
       await updateProfile(userCredential.user, { displayName: name });
 
       navigator("/login");
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      if(e instanceof FirebaseError) {
+        alert(e.message);
+      }
     } finally {
       setEmail("");
       setName("");

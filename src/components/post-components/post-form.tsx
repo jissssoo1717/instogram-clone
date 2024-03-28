@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { PostProps } from "./posts";
 import { useEffect, useState } from "react";
 import { collection, deleteDoc, doc, setDoc } from "firebase/firestore";
-import { auth, db, storage } from "../firebase";
+import { auth, db, storage } from "../../firebase";
 import { CommentList } from "./post-comment-list";
 import { LikeButton } from "./post-like-button";
-import { PostOption } from "../routes/modals/post-opt-modal";
+import { PostOption } from "../../routes/modals/post-opt-modal";
 import { deleteObject, ref } from "firebase/storage";
 
 const Container = styled.div`

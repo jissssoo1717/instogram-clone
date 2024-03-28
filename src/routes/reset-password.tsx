@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
+import { FirebaseError } from "firebase/app";
 
 const Container = styled.div`
   width: 100%;
@@ -103,8 +104,11 @@ export const ResetPassword = () => {
       sendPasswordResetEmail(auth, email).then(() => {
         alert("이메일을 확인해주세요.");
       });
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      if(e instanceof FirebaseError) {
+        alert(e.message);
+      }
+
     } finally {
       setEmail("");
     }
